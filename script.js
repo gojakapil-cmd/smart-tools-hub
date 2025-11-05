@@ -26,8 +26,16 @@ function activateTool(name){
   panels.forEach(p=>{
     p.classList.toggle('hidden', p.dataset.toolPanel !== name);
   });
-  // set title
-  const titleMap = { qr: 'QR Generator', case: 'Text Case Converter', count: 'Word & Character Counter', age: 'Age Calculator', pdf: 'Text → PDF' };
+  
+  // ⭐️ UPDATED: New Title added for 'read'
+  const titleMap = { 
+    qr: 'QR Generator', 
+    read: 'QR Reader', // <-- NEW
+    case: 'Text Case Converter', 
+    count: 'Word & Character Counter', 
+    age: 'Age Calculator', 
+    pdf: 'Text → PDF' 
+  };
   toolTitle.textContent = titleMap[name] || 'Tool';
   localStorage.setItem('lastTool', name);
 }
@@ -60,14 +68,18 @@ document.getElementById('generateQR').addEventListener('click', ()=>{
   qrObj = new QRCode(box, { text: txt, width: 200, height: 200 });
 });
 
-// download QR (creates PNG from canvas/svg)
+// download QR (FIXED VERSION)
 document.getElementById('downloadQR').addEventListener('click', ()=>{
   const box = document.getElementById('qrcode');
-  if(!box.querySelector('img') && !box.querySelector('canvas')){
-    alert('Generate QR first');
+  // Priority 1: Check for Canvas (Primary)
+  const canvas = box.querySelector('canvas');
+  if(canvas){
+    const url = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = url; a.download = 'qr.png'; a.click();
     return;
   }
-  // if img present
+  // Priority 2: Check for Image (Fallback)
   const img = box.querySelector('img');
   if(img){
     const url = img.src;
@@ -75,18 +87,65 @@ document.getElementById('downloadQR').addEventListener('click', ()=>{
     a.href = url; a.download = 'qr.png'; a.click();
     return;
   }
-  // if canvas present, convert to dataURL
-  const canvas = box.querySelector('canvas');
-  if(canvas){
-    const url = canvas.toDataURL('image/png');
-    const a = document.createElement('a');
-    a.href = url; a.download = 'qr.png'; a.click();
-  }
+  alert('Please generate a QR code first!');
 });
 document.getElementById('clearQR').addEventListener('click', ()=>{
   document.getElementById('qrText').value = '';
   document.getElementById('qrcode').innerHTML = '';
 });
+
+
+// ---------------- ⭐️ NEW: QR Reader (jsQR) ⭐️ ----------------
+const scanBtn = document.getElementById('scanQRBtn');
+const scanInput = document.getElementById('qrReaderInput');
+const scanResult = document.getElementById('qrScanResult');
+
+scanBtn.addEventListener('click', () => {
+  const file = scanInput.files[0];
+  if (!file) {
+    scanResult.textContent = 'Please upload an image file first.';
+    scanResult.style.color = '#ef4444'; // red
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      // Create a canvas to draw the image onto
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      
+      // Get image data from canvas
+      const imageData = ctx.getImageData(0, 0, img.width, img.height);
+      
+      // Use jsQR to scan the image data
+      const code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: 'dontInvert',
+      });
+
+      if (code) {
+        scanResult.textContent = `Result: ${code.data}`;
+        scanResult.style.color = '#0f1724'; // default color
+      } else {
+        scanResult.textContent = 'No QR code found in the image.';
+        scanResult.style.color = '#ef4444'; // red
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+// Clear scan result
+document.getElementById('clearScan').addEventListener('click', () => {
+  scanInput.value = ''; // Clears the selected file
+  scanResult.textContent = '';
+});
+
 
 // --------------- Text Case Converter
 const caseArea = document.getElementById('caseText');
