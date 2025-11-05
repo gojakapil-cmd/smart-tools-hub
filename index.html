@@ -21,6 +21,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -45,6 +47,7 @@
 
       <nav class="nav">
         <button class="nav-item" data-tool="qr" id="nav-qr">QR Generator</button>
+        <button class="nav-item" data-tool="read" id="nav-read">QR Reader</button>
         <button class="nav-item" data-tool="case" id="nav-case">Text Case</button>
         <button class="nav-item" data-tool="count" id="nav-count">Word Counter</button>
         <button class="nav-item" data-tool="age" id="nav-age">Age Calculator</button>
@@ -74,6 +77,17 @@
           </div>
           <div id="qrcode" class="qrcode"></div>
           <p class="hint">Scan the QR with your phone camera to test.</p>
+        </div>
+
+        <div class="tool-panel hidden" data-tool-panel="read">
+          <label class="label">Upload QR Code Image</label>
+          <input id="qrReaderInput" type="file" accept="image/*" class="input" />
+          <div class="row">
+            <button id="scanQRBtn" class="btn primary">Scan QR Code</button>
+            <button id="clearScan" class="btn alt">Clear</button>
+          </div>
+          <p id="qrScanResult" class="result"></p>
+          <p class="hint">Upload a screenshot or photo of a QR code.</p>
         </div>
 
         <div class="tool-panel hidden" data-tool-panel="case">
@@ -127,6 +141,7 @@
 
     <nav class="bottom-nav" id="bottomNav">
       <button class="bn-item" data-tool="qr">QR</button>
+      <button class="bn-item" data-tool="read">Read</button>
       <button class="bn-item" data-tool="case">Case</button>
       <button class="bn-item" data-tool="count">Count</button>
       <button class="bn-item" data-tool="age">Age</button>
