@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SmartAI Tools Hub — Dashboard</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- QRCode lib -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SPLASH -->
+  <div id="splash" class="splash">
+    <div class="splash-inner">
+      <div class="logo">🤖</div>
+      <h1>SmartAI Tools</h1>
+      <p class="tag">Fast • Free • Minimal</p>
+      <div class="loader"><span></span></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="app hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo">🤖</div>
+        <div class="brand-title">SmartAI Tools</div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item" data-tool="qr" id="nav-qr">QR Generator</button>
+        <button class="nav-item" data-tool="case" id="nav-case">Text Case</button>
+        <button class="nav-item" data-tool="count" id="nav-count">Word Counter</button>
+        <button class="nav-item" data-tool="age" id="nav-age">Age Calculator</button>
+        <button class="nav-item" data-tool="pdf" id="nav-pdf">Text → PDF</button>
+      </nav>
+
+      <div class="sidebar-foot">Made with ❤️ by <strong>Kapil</strong></div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <header class="topbar">
+        <h2 id="tool-title">QR Generator</h2>
+        <div class="top-controls">
+          <button id="btn-refresh" title="Reload tool">↻</button>
+        </div>
+      </header>
+
+      <section class="tool-area" id="tool-area">
+
+        <!-- TOOL: QR -->
+        <div class="tool-panel" data-tool-panel="qr">
+          <label class="label">Enter text or URL</label>
+          <input id="qrText" class="input" placeholder="https://example.com or any text" />
+          <div class="row">
+            <button id="generateQR" class="btn primary">Generate QR</button>
+            <button id="downloadQR" class="btn">Download</button>
+            <button id="clearQR" class="btn alt">Clear</button>
+          </div>
+          <div id="qrcode" class="qrcode"></div>
+          <p class="hint">Scan the QR with your phone camera to test.</p>
+        </div>
+
+        <!-- TOOL: Text Case -->
+        <div class="tool-panel hidden" data-tool-panel="case">
+          <label class="label">Paste text below</label>
+          <textarea id="caseText" class="textarea" placeholder="Paste or type..."></textarea>
+          <div class="row">
+            <button id="upperBtn" class="btn">UPPERCASE</button>
+            <button id="lowerBtn" class="btn">lowercase</button>
+            <button id="titleBtn" class="btn">Title Case</button>
+            <button id="sentenceBtn" class="btn">Sentence case</button>
+          </div>
+          <div class="row mt">
+            <button id="copyCase" class="btn primary">Copy Result</button>
+            <button id="clearCase" class="btn alt">Clear</button>
+          </div>
+        </div>
+
+        <!-- TOOL: Word Counter -->
+        <div class="tool-panel hidden" data-tool-panel="count">
+          <label class="label">Enter your text</label>
+          <textarea id="countText" class="textarea" placeholder="Type or paste..."></textarea>
+          <div class="row">
+            <button id="countBtn" class="btn primary">Count</button>
+            <button id="clearCount" class="btn alt">Clear</button>
+          </div>
+          <p id="countResult" class="result">Words: 0 | Characters: 0 | Reading: 0 min</p>
+        </div>
+
+        <!-- TOOL: Age Calculator -->
+        <div class="tool-panel hidden" data-tool-panel="age">
+          <label class="label">Select Date of Birth</label>
+          <input id="dob" type="date" class="input" />
+          <div class="row">
+            <button id="calcAge" class="btn primary">Calculate Age</button>
+            <button id="clearAge" class="btn alt">Clear</button>
+          </div>
+          <p id="ageResult" class="result"></p>
+        </div>
+
+        <!-- TOOL: Text to PDF -->
+        <div class="tool-panel hidden" data-tool-panel="pdf">
+          <label class="label">Text to convert into PDF</label>
+          <textarea id="pdfText" class="textarea" placeholder="Type or paste text..."></textarea>
+          <div class="row">
+            <button id="makePdf" class="btn primary">Create & Download PDF</button>
+            <button id="clearPdf" class="btn alt">Clear</button>
+          </div>
+          <p class="hint">PDF created client-side (no server).</p>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="bn-item" data-tool="qr">QR</button>
+      <button class="bn-item" data-tool="case">Case</button>
+      <button class="bn-item" data-tool="count">Count</button>
+      <button class="bn-item" data-tool="age">Age</button>
+      <button class="bn-item" data-tool="pdf">PDF</button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
